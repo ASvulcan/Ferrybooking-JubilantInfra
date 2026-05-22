@@ -1,8 +1,11 @@
 // Razorpay Integration for Ferry Booking App
 // Uses real Razorpay orders created via backend server
 
+// Use relative URL so it works locally and on Vercel
+// In development with the Express backend running, this proxies to localhost:3001
+// On Vercel, this calls the serverless functions in /api
 const RAZORPAY_KEY_ID = "rzp_test_SrIH6Gs6BvTmUN";
-const BACKEND_URL = "http://localhost:3001/api";
+const BACKEND_URL = "/api";
 
 // Creates a real payment order via the backend server
 async function createOrder(amount: number, currency = "INR"): Promise<{ id: string; amount: number; currency: string }> {

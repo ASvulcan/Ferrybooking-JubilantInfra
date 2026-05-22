@@ -2,7 +2,7 @@
   "name": "ferry-booking-app-workspace",
   "version": "1.0.0",
   "private": true,
-  "description": "Ferry Booking App - Frontend (Vite/React) + Backend (Express/Razorpay)",
+  "description": "Ferry Booking App - Frontend (Vite/React) + Backend (Vercel Serverless)",
   "scripts": {
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "dev:frontend": "npm run dev --prefix frontend",
@@ -10,7 +10,11 @@
     "build": "npm run build --prefix frontend",
     "preview": "npm run preview --prefix frontend",
     "install:all": "npm install --prefix frontend && npm install --prefix backend",
-    "start:backend": "node backend/index.js"
+    "start:backend": "node backend/index.js",
+    "vercel-build": "cd frontend && npm install && npm run build"
+  },
+  "dependencies": {
+    "razorpay": "^2.9.6"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
