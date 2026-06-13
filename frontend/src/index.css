@@ -206,6 +206,16 @@
 }
 
 @layer utilities {
+  /* bg-fixed on desktop only - prevents janky scrolling on mobile */
+  .bg-fixed-desktop {
+    background-attachment: scroll;
+  }
+  @media (min-width: 768px) {
+    .bg-fixed-desktop {
+      background-attachment: fixed;
+    }
+  }
+
   input[type="search"]::-webkit-search-cancel-button {
     @apply hidden;
   }

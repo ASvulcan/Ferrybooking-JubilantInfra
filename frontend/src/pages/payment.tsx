@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PageWrapper } from "@/components/layout/PageWrapper";
+import UPIQRCode from "@/components/UPIQRCode";
 import { routes, schedules, vehicles } from "@/services/mockData";
 import { initiatePayment, type PaymentResult } from "@/services/razorpay";
 
@@ -21,6 +22,7 @@ export default function Payment() {
   const [paymentResult, setPaymentResult] = useState<PaymentResult | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>("card");
+  const [showUPIQR, setShowUPIQR] = useState(false);
 
   // Parse query params
   const searchParams = new URLSearchParams(window.location.search);
@@ -55,11 +57,11 @@ export default function Payment() {
     }
   }, []);
 
-  const handlePayment = async () => {
+  const handleCardPayment = async () => {
     setIsProcessing(true);
     setPaymentStatus("processing");
 
-    // Open Razorpay checkout — it handles card form and UPI QR code natively
+    // Open Razorpay checkout for card payments
     const result = await initiatePayment({
       amount: finalAmount,
       name: "FerryBooking",
@@ -69,13 +71,33 @@ export default function Payment() {
         email: "demo@ferrybooking.in",
         contact: "9876543210",
       },
-      method: selectedMethod === "upi" ? "upi" : undefined,
+      method: "card",
       themeColor: "#14b8a6",
     });
 
     setPaymentResult(result);
     setPaymentStatus(result.success ? "success" : "failed");
     setIsProcessing(false);
+  };
+
+  const handleUPIPayment = () => {
+    // Show UPI QR code instead of Razorpay
+    setShowUPIQR(true);
+  };
+
+  const handleUPISuccess = () => {
+    // Simulate successful UPI payment
+    setPaymentResult({
+      success: true,
+      paymentId: `pay_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`,
+      orderId: `order_${Date.now().toString(36)}`,
+    });
+    setPaymentStatus("success");
+    setShowUPIQR(false);
+  };
+
+  const handleUPICancel = () => {
+    setShowUPIQR(false);
   };
 
   const handleProceedToTicket = () => {
@@ -93,7 +115,7 @@ export default function Payment() {
 
   return (
     <PageWrapper className="bg-background">
-      <div className="container mx-auto px-4 py-12 md:py-20 max-w-2xl">
+      <div className="container mx-auto px-4 pt-20 md:pt-24 pb-12 md:pb-20 max-w-2xl">
         {/* Back Button */}
         <Link href="/">
           <Button variant="ghost" className="mb-6 pl-0 hover:bg-transparent hover:text-primary">
@@ -106,11 +128,11 @@ export default function Payment() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex items-center gap-3 mb-2">
-            <Wallet className="w-6 h-6 text-primary" />
-            <h1 className="font-serif text-3xl md:text-4xl font-bold">Complete Payment</h1>
+          <div className="flex items-center gap-2 md:gap-3 mb-2">
+            <Wallet className="w-5 h-5 md:w-6 md:h-6 text-primary shrink-0" />
+            <h1 className="font-serif text-2xl md:text-4xl font-bold">Complete Payment</h1>
           </div>
-          <p className="text-muted-foreground mb-8">
+          <p className="text-muted-foreground mb-6 md:mb-8 text-sm md:text-base">
             Secure your ferry booking with a single payment
           </p>
         </motion.div>
@@ -287,7 +309,7 @@ export default function Payment() {
         </AnimatePresence>
 
         {/* Payment Method Selection & Button */}
-        {paymentStatus === "idle" && (
+        {paymentStatus === "idle" && !showUPIQR && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -311,7 +333,7 @@ export default function Payment() {
                     <button
                       onClick={() => setSelectedMethod("card")}
                       className={`
-                        flex flex-col items-center gap-3 p-5 rounded-xl border-2 transition-all
+                        flex flex-col items-center gap-2 md:gap-3 p-3 md:p-5 rounded-xl border-2 transition-all
                         ${
                           selectedMethod === "card"
                             ? "border-primary bg-primary/10 text-primary shadow-sm"
@@ -319,11 +341,11 @@ export default function Payment() {
                         }
                       `}
                     >
-                      <div className={`p-3 rounded-full ${selectedMethod === "card" ? "bg-primary/15" : "bg-muted"}`}>
-                        <CreditCard className="w-6 h-6" />
+                      <div className={`p-2 md:p-3 rounded-full ${selectedMethod === "card" ? "bg-primary/15" : "bg-muted"}`}>
+                        <CreditCard className="w-5 h-5 md:w-6 md:h-6" />
                       </div>
-                      <span className="text-sm font-semibold">Credit / Debit Card</span>
-                      <span className="text-[10px] text-center leading-tight opacity-70">
+                      <span className="text-xs md:text-sm font-semibold leading-tight text-center">Credit / Debit Card</span>
+                      <span className="text-[9px] md:text-[10px] text-center leading-tight opacity-70 hidden sm:inline">
                         Visa, Mastercard, RuPay & Amex
                       </span>
                     </button>
@@ -332,7 +354,7 @@ export default function Payment() {
                     <button
                       onClick={() => setSelectedMethod("upi")}
                       className={`
-                        flex flex-col items-center gap-3 p-5 rounded-xl border-2 transition-all
+                        flex flex-col items-center gap-2 md:gap-3 p-3 md:p-5 rounded-xl border-2 transition-all
                         ${
                           selectedMethod === "upi"
                             ? "border-primary bg-primary/10 text-primary shadow-sm"
@@ -340,11 +362,11 @@ export default function Payment() {
                         }
                       `}
                     >
-                      <div className={`p-3 rounded-full ${selectedMethod === "upi" ? "bg-primary/15" : "bg-muted"}`}>
-                        <Smartphone className="w-6 h-6" />
+                      <div className={`p-2 md:p-3 rounded-full ${selectedMethod === "upi" ? "bg-primary/15" : "bg-muted"}`}>
+                        <Smartphone className="w-5 h-5 md:w-6 md:h-6" />
                       </div>
-                      <span className="text-sm font-semibold">UPI</span>
-                      <span className="text-[10px] text-center leading-tight opacity-70">
+                      <span className="text-xs md:text-sm font-semibold">UPI</span>
+                      <span className="text-[9px] md:text-[10px] text-center leading-tight opacity-70 hidden sm:inline">
                         Google Pay, PhonePe, Paytm & BHIM
                       </span>
                     </button>
@@ -352,7 +374,7 @@ export default function Payment() {
                 </div>
 
                 <Button
-                  onClick={handlePayment}
+                  onClick={selectedMethod === "upi" ? handleUPIPayment : handleCardPayment}
                   disabled={isProcessing}
                   className="w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-base font-semibold"
                   size="lg"
@@ -402,6 +424,27 @@ export default function Payment() {
             </motion.div>
           </motion.div>
         )}
+
+        {/* UPI QR Code Display */}
+        <AnimatePresence mode="wait">
+          {showUPIQR && (
+            <motion.div
+              key="upi-qr"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <UPIQRCode
+                amount={finalAmount}
+                name="FerryBooking"
+                note={`${fromPort} → ${toPort} | ${passengers} Passenger(s)`}
+                onSuccess={handleUPISuccess}
+                onCancel={handleUPICancel}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </PageWrapper>
   );

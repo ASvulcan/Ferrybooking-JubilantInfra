@@ -13,6 +13,7 @@ import {
 import { adminStats, recentBookings } from "@/services/mockData";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { PageWrapper } from "@/components/layout/PageWrapper";
 
 const revenueData = [
   { name: 'Jan', value: 4000 },
@@ -49,10 +50,11 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col md:flex-row">
-      {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-sidebar border-r border-border flex flex-col">
-        <div className="p-6">
+    <PageWrapper className="bg-background">
+      <div className="min-h-screen flex flex-col md:flex-row pt-16 md:pt-0">
+        {/* Sidebar */}
+        <aside className="w-full md:w-64 bg-sidebar border-r border-border flex flex-col md:min-h-screen md:pt-16">
+        <div className="p-4 md:p-6">
           <Link href="/" className="flex items-center gap-2 group inline-flex mb-8">
             <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
               <Ship className="w-4 h-4 text-primary" />
@@ -290,5 +292,6 @@ export default function AdminDashboard() {
         </div>
       </main>
     </div>
+    </PageWrapper>
   );
 }

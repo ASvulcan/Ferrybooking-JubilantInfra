@@ -22,7 +22,7 @@ export default function AdminLogin() {
   };
 
   return (
-    <PageWrapper showNav={false} showFooter={false} className="bg-background relative overflow-hidden flex items-center justify-center">
+    <PageWrapper className="bg-background relative overflow-hidden flex items-center justify-center pt-16">
       {/* Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/8 rounded-full blur-[120px]" />

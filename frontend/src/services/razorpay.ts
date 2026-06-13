@@ -4,7 +4,8 @@
 // Use relative URL so it works locally and on Vercel
 // In development with the Express backend running, this proxies to localhost:3001
 // On Vercel, this calls the serverless functions in /api
-const RAZORPAY_KEY_ID = "rzp_test_SrIH6Gs6BvTmUN";
+// Key ID comes from VITE_RAZORPAY_KEY_ID (.env file) or Vercel env vars
+const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_SrIH6Gs6BvTmUN";
 const BACKEND_URL = "/api";
 
 // Creates a real payment order via the backend server

@@ -36,7 +36,7 @@ export default function ValidateTicket() {
 
   return (
     <PageWrapper className="bg-background">
-      <div className="container mx-auto px-4 py-12 md:py-24 max-w-md">
+      <div className="container mx-auto px-4 pt-20 md:pt-24 pb-12 md:pb-24 max-w-md">
         
         <div className="text-center mb-10">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border border-primary/20 mb-6">

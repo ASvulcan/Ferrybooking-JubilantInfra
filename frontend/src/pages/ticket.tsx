@@ -58,7 +58,7 @@ export default function TicketPreview() {
 
   return (
     <PageWrapper className="bg-background">
-      <div className="container mx-auto px-4 py-12 md:py-20 max-w-4xl">
+      <div className="container mx-auto px-4 pt-20 md:pt-24 pb-12 md:pb-20 max-w-4xl">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -88,9 +88,9 @@ export default function TicketPreview() {
             {/* Top Pattern */}
             <div className="h-4 w-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjMTExYzJhIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wLDBMOCw4TTAsOEw4LDAiIHN0cm9rZT0iIzQzYjVlYSIgc3Ryb2tlLXdpZHRoPSIxIj48L3BhdGg+Cjwvc3ZnPg==')] opacity-30" />
             
-            <div className="grid md:grid-cols-[1fr_300px]">
+            <div className="flex flex-col md:grid md:grid-cols-[1fr_300px]">
               {/* Left Side: Details */}
-              <div className="p-8 md:p-10 relative">
+              <div className="p-5 md:p-10 relative">
                 {/* Watermark */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-5 pointer-events-none">
                   <Ship className="w-64 h-64" />
@@ -113,29 +113,29 @@ export default function TicketPreview() {
                 </div>
 
                 {/* Route */}
-                <div className="flex items-center justify-between mb-12 relative z-10">
+                <div className="flex items-center justify-between mb-8 md:mb-12 relative z-10">
                   <div className="text-center md:text-left">
-                    <p className="text-3xl md:text-5xl font-bold mb-2">{fromPort.substring(0, 3).toUpperCase()}</p>
-                    <p className="text-muted-foreground font-medium">{fromPort}</p>
+                    <p className="text-2xl md:text-5xl font-bold mb-1 md:mb-2">{fromPort.substring(0, 3).toUpperCase()}</p>
+                    <p className="text-xs md:text-base text-muted-foreground font-medium">{fromPort}</p>
                   </div>
                   
-                  <div className="flex-1 flex flex-col items-center px-4 md:px-8">
+                  <div className="flex-1 flex flex-col items-center px-2 md:px-8">
                     <div className="w-full flex items-center">
                       <div className="h-px bg-white/20 flex-1" />
-                      <Ship className="w-6 h-6 text-primary mx-4" />
+                      <Ship className="w-5 h-5 md:w-6 md:h-6 text-primary mx-2 md:mx-4" />
                       <div className="h-px bg-white/20 flex-1" />
                     </div>
-                    <p className="text-xs text-muted-foreground mt-2 uppercase tracking-widest">Direct Route</p>
+                    <p className="text-[10px] md:text-xs text-muted-foreground mt-1 md:mt-2 uppercase tracking-widest">Direct Route</p>
                   </div>
 
                   <div className="text-center md:text-right">
-                    <p className="text-3xl md:text-5xl font-bold mb-2">{toPort.substring(0, 3).toUpperCase()}</p>
-                    <p className="text-muted-foreground font-medium">{toPort}</p>
+                    <p className="text-2xl md:text-5xl font-bold mb-1 md:mb-2">{toPort.substring(0, 3).toUpperCase()}</p>
+                    <p className="text-xs md:text-base text-muted-foreground font-medium">{toPort}</p>
                   </div>
                 </div>
 
                 {/* Details Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 relative z-10 border-t border-border pt-8">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 relative z-10 border-t border-border pt-6 md:pt-8">
                   <div>
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1"><Calendar className="w-3 h-3" /> Date</p>
                     <p className="font-medium">{formattedDate}</p>
@@ -156,27 +156,27 @@ export default function TicketPreview() {
               </div>
 
               {/* Right Side: QR Code */}
-              <div className="bg-muted/50 p-8 md:p-10 border-l border-dashed border-border relative flex flex-col items-center justify-center">
+              <div className="bg-muted/50 p-6 md:p-10 md:border-l border-t md:border-t-0 border-dashed border-border relative flex flex-col items-center justify-center">
                 {/* Cutout circles for realism */}
-                <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-background" />
-                <div className="absolute -bottom-4 -left-4 w-8 h-8 rounded-full bg-background" />
+                <div className="absolute -top-4 -left-4 w-8 h-8 rounded-full bg-background hidden md:block" />
+                <div className="absolute -bottom-4 -left-4 w-8 h-8 rounded-full bg-background hidden md:block" />
                 
-                <div className="bg-white p-4 rounded-xl mb-6">
+                <div className="bg-white p-3 md:p-4 rounded-xl mb-4 md:mb-6">
                   <QRCodeSVG 
                     value={`https://ferrybooking.in/validate?ticket=${ticketId}`} 
-                    size={160}
+                    size={140}
                     level="Q"
                     includeMargin={false}
                   />
                 </div>
                 
-                <p className="text-sm text-center text-muted-foreground">
+                <p className="text-xs md:text-sm text-center text-muted-foreground">
                   Scan at terminal gate<br/>for automatic boarding
                 </p>
 
-                <div className="mt-8 pt-6 border-t border-border w-full">
+                <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-border w-full">
                   <p className="text-xs text-center text-muted-foreground uppercase tracking-widest">Boarding Group</p>
-                  <p className="text-4xl font-bold text-center mt-1 text-foreground">A</p>
+                  <p className="text-3xl md:text-4xl font-bold text-center mt-1 text-foreground">A</p>
                 </div>
               </div>
             </div>

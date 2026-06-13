@@ -29,5 +29,10 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment variables (keep .env.example for reference)
+.env
+.env.local
+.env.production
+
 # OS
 Thumbs.db
